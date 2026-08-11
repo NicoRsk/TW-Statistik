@@ -391,18 +391,17 @@ function renderDetail(index) {
     </div>
 
     <div class="quote-block">
-      <div class="quote-block__label">Paradenquote</div>
-      <div class="quote-block__value ${quoteClass}">${fmtPct(totals.pct)}</div>
-      <div class="quote-sub">
-        <div class="quote-sub__item">
-          <div class="quote-sub__label">xSaves</div>
-          <div class="quote-sub__value">${fmtPct(xsave)}</div>
+      <div class="quote-main-row">
+        <div class="quote-primary">
+          <div class="quote-primary__label">Paradenquote</div>
+          <div class="quote-value quote-value--filled ${quoteClass}">${fmtPct(totals.pct)}</div>
         </div>
-        <div class="quote-sub__item">
-          <div class="quote-sub__label">Differenz</div>
-          <div class="quote-sub__value ${diff >= 0 ? "pos" : "neg"}">${diff >= 0 ? "+" : ""}${fmtPct(diff)}</div>
+        <div class="quote-secondary">
+          <div class="quote-secondary__label">Differenz</div>
+          <div class="quote-value quote-value--outline ${quoteClass}">${diff >= 0 ? "+" : ""}${fmtPct(diff)}</div>
         </div>
       </div>
+      <div class="quote-xsave">xSaves-Quote <b>${fmtPct(xsave)}</b></div>
     </div>
 
     <div class="card">
