@@ -1,7 +1,7 @@
 // Bei jeder inhaltlichen Änderung an den Dateien diese Version erhöhen,
 // sonst liefern Browser (v. a. Safari/iOS) weiterhin die alte, zwischengespeicherte
 // Fassung aus – das ist der übliche "ich sehe mein Update nicht"-Fallstrick bei PWAs.
-const CACHE_VERSION = "tw-stats-v7";
+const CACHE_VERSION = "tw-stats-v8";
 
 const PRECACHE_URLS = [
   "./index.html",
@@ -16,8 +16,15 @@ const PRECACHE_URLS = [
 self.addEventListener("install", (event) => {
   event.waitUntil(
     caches.open(CACHE_VERSION)
-      .then((cache) => cache.addAll(PRECACHE_URLS))
-      .then(() => self.skipWaiting()) // Sofort aktiv werden, nicht auf geschlossene Tabs warten
+      .then((cache) => {
+        // Wichtig: mit "reload" explizit am normalen HTTP-Cache des Browsers
+        // vorbeiladen. Ohne das kann der Browser hier veraltete, lokal
+        // zwischengespeicherte Kopien von app.js & Co. liefern, obwohl der
+        // Server längst die neue Version ausliefert.
+        const requests = PRECACHE_URLS.map((url) => new Request(url, { cache: "reload" }));
+        return cache.addAll(requests);
+      })
+      .then(() => self.skipWaiting())
   );
 });
 
