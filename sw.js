@@ -1,7 +1,7 @@
 // Bei jeder inhaltlichen Änderung an den Dateien diese Version erhöhen,
 // sonst liefern Browser (v. a. Safari/iOS) weiterhin die alte, zwischengespeicherte
 // Fassung aus – das ist der übliche "ich sehe mein Update nicht"-Fallstrick bei PWAs.
-const CACHE_VERSION = "tw-stats-v1";
+const CACHE_VERSION = "tw-stats-v3";
 
 const PRECACHE_URLS = [
   "./index.html",
