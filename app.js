@@ -292,6 +292,15 @@ function render() {
   app.innerHTML = view.screen === "overview" ? renderOverview() : renderDetail(view.keeperIndex);
 }
 
+function renderAppHeader() {
+  const nameSuffix = CREDIT_NAME ? ` ${escapeHtml(CREDIT_NAME)}` : "";
+  return `
+    <div class="header">
+      <div class="header__title">TW-Statistiken${nameSuffix}<small>Live-Spielstatistik</small></div>
+      <div class="status-dot ${navigator.onLine ? "" : "is-offline"}" id="status-dot">${navigator.onLine ? "Bereit" : "Offline"}</div>
+    </div>`;
+}
+
 function renderOverview() {
   const totals = teamTotals();
   const xsave = teamXSave();
@@ -312,13 +321,8 @@ function renderOverview() {
       </button>`;
   }).join("");
 
-  const creditPrefix = CREDIT_NAME ? `by ${escapeHtml(CREDIT_NAME)} · ` : "";
-
   return `
-    <div class="header">
-      <div class="header__title">TW-Statistiken<small>${creditPrefix}Live-Spielstatistik</small></div>
-      <div class="status-dot ${navigator.onLine ? "" : "is-offline"}" id="status-dot">${navigator.onLine ? "Bereit" : "Offline"}</div>
-    </div>
+    ${renderAppHeader()}
 
     <div class="card">
       <div class="card__label">Team gesamt</div>
@@ -356,6 +360,8 @@ function renderDetail(index) {
   const diff = totals.pct - xsave;
 
   return `
+    ${renderAppHeader()}
+
     <div class="topbar">
       <button type="button" class="back-btn" data-action="back" aria-label="Zurück">‹</button>
       <input class="name-input" type="text" value="${escapeHtml(keeper.name)}" data-action="rename" data-keeper="${index}" maxlength="40">
