@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1">
+<meta name="theme-color" content="#10151C">
+<meta name="description" content="Torhüter-Statistiken live im Spiel erfassen – Paradenquote, xSaves und Abschlusszonen.">
+<title>TW-Statistiken</title>
+
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="TW-Stats">
+
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div id="app" class="app"></div>
+
+<!-- Wiederverwendbares Overlay für Zonenauswahl -->
+<div id="zone-overlay" class="overlay" hidden>
+  <div class="overlay__panel" role="dialog" aria-modal="true" aria-labelledby="zone-overlay-title">
+    <h2 id="zone-overlay-title" class="overlay__title">Abschlussposition</h2>
+    <p class="overlay__hint" id="zone-overlay-hint"></p>
+    <div id="zone-grid" class="zone-grid"></div>
+    <div class="overlay__actions">
+      <button id="zone-cancel" class="btn btn--ghost" type="button">Abbrechen</button>
+    </div>
+  </div>
+</div>
+
+<!-- Reset-Bestätigung -->
+<div id="reset-overlay" class="overlay" hidden>
+  <div class="overlay__panel overlay__panel--narrow" role="dialog" aria-modal="true" aria-labelledby="reset-overlay-title">
+    <h2 id="reset-overlay-title" class="overlay__title">Reset bestätigen</h2>
+    <p class="overlay__hint">Alle Paraden, Gegentore und Verläufe werden für alle Torhüter gelöscht. Das kann nicht rückgängig gemacht werden.</p>
+    <div class="overlay__actions overlay__actions--split">
+      <button id="reset-cancel" class="btn btn--ghost" type="button">Abbrechen</button>
+      <button id="reset-confirm" class="btn btn--danger" type="button">Zurücksetzen</button>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast" hidden></div>
+
+<script src="app.js"></script>
+</body>
+</html>

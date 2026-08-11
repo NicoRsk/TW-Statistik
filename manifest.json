@@ -1,0 +1,16 @@
+{
+  "name": "TW-Statistiken",
+  "short_name": "TW-Stats",
+  "description": "Torhüter-Statistiken live im Spiel erfassen – Paradenquote, xSaves und Abschlusszonen.",
+  "start_url": "./index.html",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#10151C",
+  "theme_color": "#10151C",
+  "lang": "de",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" }
+  ]
+}
