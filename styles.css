@@ -162,14 +162,16 @@ input:focus-visible,
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-dim);
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 .diff-line__value {
   font-weight: 800;
   font-variant-numeric: tabular-nums;
-  font-size: 15px;
+  font-size: 28px;
 }
 
 .pos { color: var(--accent); }
@@ -210,7 +212,14 @@ input:focus-visible,
   font-size: 22px;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
+  padding: 6px 14px;
+  border-radius: 999px;
+  white-space: nowrap;
 }
+
+.keeper-row__quote.pos { background: var(--accent); color: #06130c; }
+.keeper-row__quote.neg { background: var(--danger); color: #200808; }
+.keeper-row__quote.neutral { background: var(--surface-2); color: var(--text-dim); }
 
 .keeper-row__chevron {
   color: var(--text-faint);
@@ -334,36 +343,77 @@ input:focus-visible,
 
 .quote-block {
   text-align: center;
-  padding: 22px 0 6px;
+  padding: 18px 0 10px;
 }
 
-.quote-block__label {
+.quote-main-row {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+}
+
+.quote-primary,
+.quote-secondary {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.quote-primary__label {
+  font-size: 14px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+
+.quote-secondary__label {
   font-size: 12px;
+  font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-faint);
+  margin-bottom: 8px;
 }
 
-.quote-block__value {
-  font-size: 56px;
+.quote-value {
+  display: inline-block;
+  font-size: clamp(48px, 15vw, 92px);
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+  white-space: nowrap;
+  padding: 2px 24px;
+  border-radius: 24px;
+}
+
+/* Hauptwert (Paradenquote): volle FarbflÃ¤che = der entscheidende Wert */
+.quote-value--filled.pos { background: var(--accent); color: #06170e; }
+.quote-value--filled.neg { background: var(--danger); color: #230a0a; }
+.quote-value--filled.neutral { background: var(--surface-2); color: var(--text-dim); border: 2px solid var(--border); }
+
+/* Differenz: gleiche GrÃ¶ÃŸe, aber nur umrandet = unterstÃ¼tzender Wert */
+.quote-value--outline {
+  background: transparent;
+  border: 3px solid currentColor;
+  padding: 2px 22px;
+}
+.quote-value--outline.pos { color: var(--accent); }
+.quote-value--outline.neg { color: var(--danger); }
+.quote-value--outline.neutral { color: var(--text-dim); border-color: var(--border); }
+
+.quote-xsave {
+  font-size: 16px;
+  color: var(--text-dim);
+}
+.quote-xsave b {
+  color: var(--text);
   font-weight: 800;
   font-variant-numeric: tabular-nums;
-  line-height: 1.05;
-  margin: 2px 0;
-}
-
-.quote-sub {
-  display: flex;
-  justify-content: center;
-  gap: 22px;
-  font-size: 13px;
-  color: var(--text-dim);
-  margin-bottom: 4px;
-}
-
-.quote-sub b {
-  font-variant-numeric: tabular-nums;
-  color: var(--text);
 }
 
 /* ---------- Zonen-Schema ---------- */
@@ -432,17 +482,18 @@ input:focus-visible,
 
 .chart-legend {
   display: flex;
-  gap: 16px;
-  font-size: 12px;
-  color: var(--text-dim);
-  margin-bottom: 8px;
+  gap: 20px;
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text);
+  margin-bottom: 10px;
 }
 .chart-legend__dot {
   display: inline-block;
-  width: 9px;
-  height: 9px;
+  width: 13px;
+  height: 13px;
   border-radius: 50%;
-  margin-right: 5px;
+  margin-right: 6px;
 }
 .chart-scroll {
   overflow-x: auto;
@@ -549,7 +600,6 @@ input:focus-visible,
 
 @media (min-width: 640px) {
   .app { padding-top: 32px; }
-  .quote-block__value { font-size: 64px; }
   .pitch-row--3 { grid-template-columns: repeat(3, 1fr); }
 }
 
