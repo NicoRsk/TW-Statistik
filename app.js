@@ -29,7 +29,7 @@ const KEEPER_COUNT = 3;
 // Pseudonym) ein, wenn du als Ersteller/in oben in der App genannt werden
 // möchtest. Leer lassen (also "" ), wenn kein Name angezeigt werden soll.
 // Das ist die einzige Zeile in der ganzen App, die dafür angepasst werden muss.
-const CREDIT_NAME = "Nico Röske";
+const CREDIT_NAME = "by Nico Röske";
 // ---------------------------------------------------------------------------
 
 /* =========================================================
