@@ -124,7 +124,7 @@ input:focus-visible,
   margin-bottom: 10px;
 }
 
-/* ---------- Team-Übersicht ---------- */
+/* ---------- Team-Ãœbersicht ---------- */
 
 .team-summary {
   display: grid;
@@ -175,7 +175,7 @@ input:focus-visible,
 .pos { color: var(--accent); }
 .neg { color: var(--danger); }
 
-/* ---------- Torhüter-Liste (Übersicht) ---------- */
+/* ---------- TorhÃ¼ter-Liste (Ãœbersicht) ---------- */
 
 .keeper-row {
   width: 100%;
