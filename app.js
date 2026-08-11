@@ -541,6 +541,17 @@ window.addEventListener("offline", () => { if (view.screen === "overview") rende
    ========================================================= */
 
 if ("serviceWorker" in navigator) {
+  // Sobald der neue Service Worker die Kontrolle übernimmt (dank skipWaiting
+  // in sw.js passiert das jetzt automatisch, ohne dass alle Fenster/Tabs
+  // manuell geschlossen werden müssen), einmalig neu laden, damit die neuen
+  // Dateien auch tatsächlich angezeigt werden.
+  let refreshingAfterUpdate = false;
+  navigator.serviceWorker.addEventListener("controllerchange", () => {
+    if (refreshingAfterUpdate) return;
+    refreshingAfterUpdate = true;
+    window.location.reload();
+  });
+
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("sw.js").then((reg) => {
       reg.addEventListener("updatefound", () => {
@@ -548,14 +559,13 @@ if ("serviceWorker" in navigator) {
         if (!newWorker) return;
         const hadControllerBefore = !!navigator.serviceWorker.controller;
         newWorker.addEventListener("statechange", () => {
-          if (newWorker.state === "installed") {
-            if (hadControllerBefore) {
-              showToast("Neue Version geladen – wird beim nächsten Start aktiv.", { sticky: true });
-            } else {
-              // Erster Durchlauf überhaupt: ab jetzt ist Offline-Nutzung möglich.
-              showToast("Fertig geladen – ab jetzt auch offline nutzbar.");
-            }
+          if (newWorker.state === "installed" && !hadControllerBefore) {
+            // Erster Durchlauf überhaupt: ab jetzt ist Offline-Nutzung möglich.
+            showToast("Fertig geladen – ab jetzt auch offline nutzbar.");
           }
+          // Bei einem Update (hadControllerBefore = true) übernimmt der neue
+          // Worker jetzt automatisch, und der controllerchange-Listener oben
+          // lädt die Seite von selbst neu – kein manuelles Eingreifen nötig.
         });
       });
     }).catch((err) => {
