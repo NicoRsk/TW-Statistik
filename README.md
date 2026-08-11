@@ -2,7 +2,7 @@ Hallo zusammen,
 
 hier die TW-Statistik-App fürs Spielfeld – funktioniert offline, keine Installation aus einem App Store nötig.
 
-Link: [HIER ADRESSE EINFÜGEN, z. B. https://DEINNAME.github.io/tw-statistik/]
+Link: https://nicorsk.github.io/TW-Statistik/
 
 iPhone/iPad:
 1. Link in SAFARI öffnen (wichtig: nicht Chrome)
