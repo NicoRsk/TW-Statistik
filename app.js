@@ -24,6 +24,14 @@ const PITCH_ORDER = ["Kreis", "7m", "Durchbruch", "Außen", "Rückraum", "Gegens
 const STORAGE_KEY = "tw-stats:v1";
 const KEEPER_COUNT = 3;
 
+// ---------------------------------------------------------------------------
+// HIER ÄNDERN: Trag zwischen den Anführungszeichen deinen Namen (oder ein
+// Pseudonym) ein, wenn du als Ersteller/in oben in der App genannt werden
+// möchtest. Leer lassen (also "" ), wenn kein Name angezeigt werden soll.
+// Das ist die einzige Zeile in der ganzen App, die dafür angepasst werden muss.
+const CREDIT_NAME = "Nico Röske";
+// ---------------------------------------------------------------------------
+
 /* =========================================================
    Status
    ========================================================= */
@@ -304,9 +312,11 @@ function renderOverview() {
       </button>`;
   }).join("");
 
+  const creditPrefix = CREDIT_NAME ? `by ${escapeHtml(CREDIT_NAME)} · ` : "";
+
   return `
     <div class="header">
-      <div class="header__title">TW-Statistiken<small>Live-Spielstatistik</small></div>
+      <div class="header__title">TW-Statistiken<small>${creditPrefix}Live-Spielstatistik</small></div>
       <div class="status-dot ${navigator.onLine ? "" : "is-offline"}" id="status-dot">${navigator.onLine ? "Bereit" : "Offline"}</div>
     </div>
 
@@ -530,9 +540,15 @@ if ("serviceWorker" in navigator) {
       reg.addEventListener("updatefound", () => {
         const newWorker = reg.installing;
         if (!newWorker) return;
+        const hadControllerBefore = !!navigator.serviceWorker.controller;
         newWorker.addEventListener("statechange", () => {
-          if (newWorker.state === "installed" && navigator.serviceWorker.controller) {
-            showToast("Neue Version geladen – wird beim nächsten Start aktiv.", { sticky: true });
+          if (newWorker.state === "installed") {
+            if (hadControllerBefore) {
+              showToast("Neue Version geladen – wird beim nächsten Start aktiv.", { sticky: true });
+            } else {
+              // Erster Durchlauf überhaupt: ab jetzt ist Offline-Nutzung möglich.
+              showToast("Fertig geladen – ab jetzt auch offline nutzbar.");
+            }
           }
         });
       });
