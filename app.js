@@ -308,6 +308,9 @@ function renderOverview() {
 
   const rows = state.keepers.map((keeper, i) => {
     const t = keeperTotals(keeper);
+    const x = keeperXSave(keeper);
+    const d = t.pct - x;
+    const quoteClass = t.shots === 0 ? "neutral" : (d >= 0 ? "pos" : "neg");
     return `
       <button type="button" class="keeper-row" data-action="open-keeper" data-keeper="${i}">
         <div>
@@ -315,7 +318,7 @@ function renderOverview() {
           <div class="keeper-row__meta">Paraden ${t.saves} · Gegentore ${t.goals}</div>
         </div>
         <div style="display:flex; align-items:center; gap:10px;">
-          <div class="keeper-row__quote">${fmtPct(t.pct)}</div>
+          <div class="keeper-row__quote ${quoteClass}">${fmtPct(t.pct)}</div>
           <div class="keeper-row__chevron">›</div>
         </div>
       </button>`;
@@ -358,6 +361,7 @@ function renderDetail(index) {
   const totals = keeperTotals(keeper);
   const xsave = keeperXSave(keeper);
   const diff = totals.pct - xsave;
+  const quoteClass = totals.shots === 0 ? "neutral" : (diff >= 0 ? "pos" : "neg");
 
   return `
     ${renderAppHeader()}
@@ -388,10 +392,16 @@ function renderDetail(index) {
 
     <div class="quote-block">
       <div class="quote-block__label">Paradenquote</div>
-      <div class="quote-block__value">${fmtPct(totals.pct)}</div>
+      <div class="quote-block__value ${quoteClass}">${fmtPct(totals.pct)}</div>
       <div class="quote-sub">
-        <span>xSaves <b>${fmtPct(xsave)}</b></span>
-        <span class="${diff >= 0 ? "pos" : "neg"}">Differenz <b>${diff >= 0 ? "+" : ""}${fmtPct(diff)}</b></span>
+        <div class="quote-sub__item">
+          <div class="quote-sub__label">xSaves</div>
+          <div class="quote-sub__value">${fmtPct(xsave)}</div>
+        </div>
+        <div class="quote-sub__item">
+          <div class="quote-sub__label">Differenz</div>
+          <div class="quote-sub__value ${diff >= 0 ? "pos" : "neg"}">${diff >= 0 ? "+" : ""}${fmtPct(diff)}</div>
+        </div>
       </div>
     </div>
 
@@ -437,19 +447,19 @@ function renderChart(history) {
     return `<div class="chart-empty">Noch keine Aktionen erfasst.</div>`;
   }
 
-  const padLeft = 34, padRight = 12, padTop = 12, padBottom = 22;
-  const stepX = 44;
+  const padLeft = 42, padRight = 14, padTop = 16, padBottom = 26;
+  const stepX = 56;
   const innerW = Math.max(history.length - 1, 1) * stepX;
-  const width = Math.max(innerW + padLeft + padRight, 260);
-  const height = 180;
+  const width = Math.max(innerW + padLeft + padRight, 300);
+  const height = 240;
   const innerH = height - padTop - padBottom;
 
   const xAt = (i) => padLeft + (history.length > 1 ? i * stepX : innerW / 2);
   const yAt = (v) => padTop + innerH - (Math.max(0, Math.min(100, v)) / 100) * innerH;
 
   const gridLines = [0, 25, 50, 75, 100].map((v) => `
-    <line x1="${padLeft}" y1="${yAt(v)}" x2="${width - padRight}" y2="${yAt(v)}" stroke="var(--border)" stroke-width="1" />
-    <text x="0" y="${yAt(v) + 4}" font-size="10" fill="var(--text-faint)">${v}%</text>
+    <line x1="${padLeft}" y1="${yAt(v)}" x2="${width - padRight}" y2="${yAt(v)}" stroke="var(--border)" stroke-width="1.5" />
+    <text x="0" y="${yAt(v) + 5}" font-size="14" font-weight="600" fill="var(--text-dim)">${v}%</text>
   `).join("");
 
   const xsavePoints = history.map((h, i) => `${xAt(i)},${yAt(h.xsave)}`).join(" ");
@@ -466,21 +476,21 @@ function renderChart(history) {
   if (current.length) saveSegments.push(current);
 
   const saveLines = saveSegments.map((seg) =>
-    `<polyline points="${seg.join(" ")}" fill="none" stroke="var(--text)" stroke-width="2.5" />`
+    `<polyline points="${seg.join(" ")}" fill="none" stroke="var(--text)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" />`
   ).join("");
 
   const saveDots = history.map((h, i) =>
-    h.save === null ? "" : `<circle cx="${xAt(i)}" cy="${yAt(h.save)}" r="2.5" fill="var(--text)" />`
+    h.save === null ? "" : `<circle cx="${xAt(i)}" cy="${yAt(h.save)}" r="5.5" fill="var(--text)" />`
   ).join("");
   const xsaveDots = history.map((h, i) =>
-    `<circle cx="${xAt(i)}" cy="${yAt(h.xsave)}" r="2" fill="var(--xsave)" />`
+    `<circle cx="${xAt(i)}" cy="${yAt(h.xsave)}" r="4.5" fill="var(--xsave)" />`
   ).join("");
 
   return `
     <div class="chart-scroll">
       <svg width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-label="Verlauf der Paradenquote und xSaves-Quote">
         ${gridLines}
-        <polyline points="${xsavePoints}" fill="none" stroke="var(--xsave)" stroke-width="2" stroke-dasharray="4 3" />
+        <polyline points="${xsavePoints}" fill="none" stroke="var(--xsave)" stroke-width="4" stroke-linecap="round" stroke-dasharray="9 6" />
         ${saveLines}
         ${xsaveDots}
         ${saveDots}
