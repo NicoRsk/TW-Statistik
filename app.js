@@ -405,18 +405,18 @@ function renderDetail(index) {
     </div>
 
     <div class="card">
-      <div class="card__label">Paradenquote nach Abschlusszone</div>
-      <div class="pitch-caption">Schematische Anordnung zur schnellen Orientierung – nicht maßstabsgetreu. "Gegenstoß" hat keine feste Position.</div>
-      ${renderPitch(keeper, { interactive: false })}
-    </div>
-
-    <div class="card">
       <div class="card__label">Verlauf</div>
       <div class="chart-legend">
         <span><span class="chart-legend__dot" style="background:var(--text)"></span>Paradenquote</span>
         <span><span class="chart-legend__dot" style="background:var(--xsave)"></span>xSaves-Quote</span>
       </div>
       ${renderChart(keeper.history)}
+    </div>
+
+    <div class="card">
+      <div class="card__label">Paradenquote nach Abschlusszone</div>
+      <div class="pitch-caption">Schematische Anordnung zur schnellen Orientierung – nicht maßstabsgetreu. "Gegenstoß" hat keine feste Position.</div>
+      ${renderPitch(keeper, { interactive: false })}
     </div>
   `;
 }
